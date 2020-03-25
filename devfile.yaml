@@ -1,0 +1,128 @@
+apiVersion: 1.0.0
+metadata:
+  generateName: people-app-
+
+projects:
+
+  - source:
+      type: git
+      location: 'https://github.com/redhat-developer-demos/quarkus-reactjs-postit-app'
+    name: people-app
+
+#  - source:
+#      type: zip
+#      location: 'https://github.com/redhat-developer-demos/quarkus-reactjs-postit-app/releases/download/20191216-local/local.zip'
+#    name: local
+
+
+components:
+
+  - alias: nodejs-backend-dev
+    type: dockerimage
+    image: asaran/nodeapp
+    memoryLimit: 1Gi
+    command: ['sleep']
+    args: ['infinity']
+    mountSources: true
+    endpoints:
+      - name: 'nodeapp/dev'
+        port: 3000
+
+  - alias: react-frontend
+    mountSources: true
+    image: 'asaran/reactapp'
+    memoryLimit: 768Mi
+    type: dockerimage
+    endpoints:
+      - name: '8080/tcp'
+        port: 8080
+    env:
+      - name: OPENSHIFT_NODEJS_USERS_URL
+        value: 'http://localhost:3000/users'
+
+  - alias: java
+    type: chePlugin
+    id: redhat/java/latest
+    memoryLimit: 1536M
+
+  - id: redhat/vscode-openshift-connector/latest
+    type: chePlugin
+    alias: vscode-openshift
+
+
+
+  - alias: git
+    type: dockerimage
+    image: sunix/git-devtools
+    mountSources: true
+    memoryLimit: 64M
+    args: ['sleep', 'infinity']
+
+commands:
+ 
+  - name: connect java debugger quarkus-backend
+    actions:
+      - type: vscode-launch
+        referenceContent: |
+          {
+          "version": "0.2.0",
+          "configurations": [
+            {
+              "type": "java",
+              "name": "Debug (Attach) - Remote",
+              "request": "attach",
+              "hostName": "localhost",
+              "port": 5005
+            }]
+          }
+
+  - name: start DEV node-backend
+    actions:
+      - type: exec
+        command: npm start
+        component: nodejs-backend-dev
+        workdir: /projects/people-app/nodeapp/
+        
+  - name: start DEV node-backend
+    actions:
+      - type: exec
+        command: npm start
+        component: nodejs-backend-dev
+        workdir: /projects/people-app/reactapp/
+        
+  - name: oc - scale reactapp-frontend
+    actions:
+      - type: exec
+        command: |-
+                  echo "Scale reactapp-frontend. Enter the number of desired replicas:";
+                  read replicas;
+                  oc scale dc/reactapp --replicas=${replicas}
+        component: vscode-openshift
+        workdir: /projects/crw/
+
+  - name: oc - scale quarkus-backend
+    actions:
+      - type: exec
+        command: |-
+                  echo "Scale node-backend. Enter the number of desired replicas:";
+                  read replicas;
+                  oc scale dc/nodeapp --replicas=${replicas}
+        component: vscode-openshift
+        workdir: /projects/crw/
+
+  - name: oc - get reactapp-frontend URL
+    actions:
+      - type: exec
+        command: |-
+                  echo reactapp-frontend url http://$(oc get route reactapp --template='{{ .spec.host }}')
+        component: vscode-openshift
+        workdir: /projects/crw/reactapp/
+
+
+  - name: oc login
+    actions:
+      - type: exec
+        command: |-
+                  rm oc; curl https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz -s | tar zxv && ./oc login --server=${KUBERNETES_SERVICE_HOST}:443
+        component: vscode-openshift
+        workdir: /tmp

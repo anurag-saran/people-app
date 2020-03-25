@@ -1,0 +1,26 @@
+docker build -t asaran/nodeapp  .
+  
+docker run -it -p 3000:3000 asaran/nodeapp  
+docker login -u asaran
+docker push asaran/nodeapp
+ 
+docker build -t asaran/reactapp  .
+  
+docker run -p 8080:8080 asaran/reactapp  
+docker login -u asaran
+docker push asaran/reactapp
+ 
+http://localhost:8080/
+http://localhost:3000/users
+ 
+oc new-app openshift/postgresql-92-centos7 \
+    -e POSTGRESQL_USER=user \
+    -e POSTGRESQL_DATABASE=db \
+    -e POSTGRESQL_PASSWORD=password
+The variables can also be read from file using the --env-file argument:
+
+$ cat postgresql.env
+POSTGRESQL_USER=user
+POSTGRESQL_DATABASE=db
+POSTGRESQL_PASSWORD=password
+$ oc new-app openshift/postgresql-92-centos7 --env-file=postgresql.env
