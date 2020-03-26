@@ -25,16 +25,18 @@ components:
     args: ['infinity']
     mountSources: true
     endpoints:
-      - name: 'nodeapp/dev'
+      - name: 'nodejsapp'
         port: 3000
 
   - alias: react-frontend
-    mountSources: true
+    type: dockerimage
     image: 'asaran/reactapp'
     memoryLimit: 768Mi
-    type: dockerimage
+    command: ['sleep']
+    args: ['infinity']
+    mountSources: true
     endpoints:
-      - name: '8080/tcp'
+      - name: 'reactapp'
         port: 8080
     env:
       - name: OPENSHIFT_NODEJS_USERS_URL
@@ -60,11 +62,11 @@ components:
 
 commands:
  
-
+ 
   - name: start DEV nodejs-backend
     actions:
       - type: exec
-        command: npm start
+        command: npm run start-server
         component: nodejs-backend
         workdir: /projects/people-app/nodeapp/
         
@@ -74,6 +76,7 @@ commands:
         command: npm start
         component: react-frontend
         workdir: /projects/people-app/reactapp/
+
         
   - name: oc - scale reactapp-frontend
     actions:

@@ -12,6 +12,9 @@ docker push asaran/reactapp
  
 http://localhost:8080/
 http://localhost:3000/users
+
+node: npm run start-server
+react: npm start
  
 oc new-app openshift/postgresql-92-centos7 \
     -e POSTGRESQL_USER=user \
