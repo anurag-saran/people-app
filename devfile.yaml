@@ -17,7 +17,7 @@ projects:
 
 components:
 
-  - alias: nodejs-backend-dev
+  - alias: nodejs-backend
     type: dockerimage
     image: asaran/nodeapp
     memoryLimit: 1Gi
@@ -60,34 +60,19 @@ components:
 
 commands:
  
-  - name: connect java debugger quarkus-backend
-    actions:
-      - type: vscode-launch
-        referenceContent: |
-          {
-          "version": "0.2.0",
-          "configurations": [
-            {
-              "type": "java",
-              "name": "Debug (Attach) - Remote",
-              "request": "attach",
-              "hostName": "localhost",
-              "port": 5005
-            }]
-          }
 
-  - name: start DEV node-backend
+  - name: start DEV nodejs-backend
     actions:
       - type: exec
         command: npm start
-        component: nodejs-backend-dev
+        component: nodejs-backend
         workdir: /projects/people-app/nodeapp/
         
-  - name: start DEV node-backend
+  - name: start DEV react-frontend
     actions:
       - type: exec
         command: npm start
-        component: nodejs-backend-dev
+        component: react-frontend
         workdir: /projects/people-app/reactapp/
         
   - name: oc - scale reactapp-frontend
