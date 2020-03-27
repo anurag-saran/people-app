@@ -1,4 +1,4 @@
-FROM node:12
+FROM registry.access.redhat.com/ubi7/nodejs-12
 
 
 # Create app directory
