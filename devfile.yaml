@@ -12,15 +12,15 @@ components:
     type: chePlugin
     id: che-incubator/typescript/latest
     memoryLimit: 512Mi
-#  -
-#    type: dockerimage
-#    alias: nodejs
-#    image: quay.io/eclipse/che-nodejs10-ubi:nightly
-#    memoryLimit: 512Mi
-#    endpoints:
-#      - name: 'nodejs'
-#        port: 3000
-#    mountSources: true
+  -
+    type: dockerimage
+    alias: nodejs
+    image: quay.io/eclipse/che-nodejs10-ubi:nightly
+    memoryLimit: 512Mi
+    endpoints:
+      - name: 'nodejs'
+        port: 3000
+    mountSources: true
 commands:
   -
     name: download dependencies
