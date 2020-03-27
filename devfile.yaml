@@ -28,21 +28,21 @@ commands:
       - type: exec
         component: nodejs
         command: npm install
-        workdir: ${CHE_PROJECTS_ROOT}/people-app/nodeapp
+        workdir: ${CHE_PROJECTS_ROOT}/people-app/nodeapp/server
   -
     name: run the web app
     actions:
       - type: exec
         component: nodejs
         command: nodemon app.js
-        workdir: ${CHE_PROJECTS_ROOT}/people-app/nodeapp
+        workdir: ${CHE_PROJECTS_ROOT}/people-app/nodeapp/server
   -
     name: run the web app (debugging enabled)
     actions:
       - type: exec
         component: nodejs
         command: nodemon --inspect app.js
-        workdir: ${CHE_PROJECTS_ROOT}/people-app/nodeapp
+        workdir: ${CHE_PROJECTS_ROOT}/people-app/nodeapp/server
   -
     name: stop the web app
     actions:
