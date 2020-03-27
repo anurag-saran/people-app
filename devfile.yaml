@@ -34,14 +34,14 @@ commands:
     actions:
       - type: exec
         component: nodejs
-        command: nodemon app.js
+        command: node server/index.js
         workdir: ${CHE_PROJECTS_ROOT}/people-app/nodeapp
   -
     name: run the web app (debugging enabled)
     actions:
       - type: exec
         component: nodejs
-        command: nodemon --inspect app.js
+        command: nodemon --inspect server/index.js
         workdir: ${CHE_PROJECTS_ROOT}/people-app/nodeapp
   -
     name: stop the web app
