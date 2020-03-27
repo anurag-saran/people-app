@@ -31,4 +31,3 @@ POSTGRESQL_DATABASE=db
 POSTGRESQL_PASSWORD=password
 $ oc new-app openshift/postgresql-92-centos7 --env-file=postgresql.env
 
-The git repository at '/projects/nodejs-web-app' has too many active changes, only a subset of Git features will be enabled.
