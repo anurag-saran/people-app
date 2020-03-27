@@ -12,42 +12,42 @@ components:
     type: chePlugin
     id: che-incubator/typescript/latest
     memoryLimit: 512Mi
-#  -
-#    type: dockerimage
-#    alias: nodejs
-#    image: quay.io/asaran/nodeapp:latest
-#    memoryLimit: 512Mi
-#    endpoints:
-#      - name: 'nodejs'
-#        port: 3000
-#    mountSources: true
+  -
+    type: dockerimage
+    alias: nodejs
+    image: quay.io/asaran/nodeapp:latest
+    memoryLimit: 512Mi
+    endpoints:
+      - name: 'nodejs'
+        port: 3000
+    mountSources: true
 commands:
   -
     name: download dependencies
     actions:
       - type: exec
-#        component: nodejs
+        component: nodejs
         command: npm install
         workdir: ${CHE_PROJECTS_ROOT}/people-app/nodeapp
   -
     name: run the web app
     actions:
       - type: exec
-#        component: nodejs
+        component: nodejs
         command: node server/index.js
         workdir: ${CHE_PROJECTS_ROOT}/people-app/nodeapp
   -
     name: run the web app (debugging enabled)
     actions:
       - type: exec
-#        component: nodejs
+        component: nodejs
         command: nodemon --inspect server/index.js
         workdir: ${CHE_PROJECTS_ROOT}/people-app/nodeapp
   -
     name: stop the web app
     actions:
       - type: exec
-#        component: nodejs
+        component: nodejs
         command: >-
           node_server_pids=$(pgrep -fx '.*nodemon (--inspect )?index.js' | tr "\\n" " ") &&
           echo "Stopping node server with PIDs: ${node_server_pids}" && 
